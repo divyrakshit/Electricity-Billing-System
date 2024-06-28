@@ -8,40 +8,36 @@ import java.sql.ResultSet;
 import net.proteanit.sql.DbUtils;
 
 
-public class BillDetails extends JFrame {
 
-    BillDetails(String  meter)   {
+public class BillDetails extends JFrame{
 
+    BillDetails(String meter) {
 
-        setSize(700,650);
-        setLocation(400,150);
+        setSize(700, 650);
+        setLocation(400, 150);
 
         getContentPane().setBackground(Color.WHITE);
 
         JTable table = new JTable();
-        try{
+
+        try {
             Conn c = new Conn();
             String query = "select * from bill where meter_no = '"+meter+"'";
             ResultSet rs = c.s.executeQuery(query);
 
-
             table.setModel(DbUtils.resultSetToTableModel(rs));
-
         } catch (Exception e) {
             e.printStackTrace();
-
         }
 
         JScrollPane sp = new JScrollPane(table);
-        sp.setBounds(0,0,700,650);
+        sp.setBounds(0, 0, 700, 650);
         add(sp);
 
         setVisible(true);
-
     }
 
     public static void main(String[] args) {
-
-         new BillDetails("");
+        new BillDetails("");
     }
 }
