@@ -11,16 +11,12 @@ import java.util.*;
 
 
 
-public class MeterInfo extends JFrame implements ActionListener{
+public class NewCustomer extends JFrame implements ActionListener{
 
     JTextField tfname, tfaddress, tfstate, tfcity, tfemail, tfphone;
     JButton next, cancel;
     JLabel lblmeter;
-    Choice meterlocation, metertype, phasecode, billtype;
-    String meternumber;
-    MeterInfo(String meternumber) {
-        this.meternumber = meternumber;
-
+    NewCustomer() {
         setSize(700, 500);
         setLocation(400, 200);
 
@@ -29,90 +25,84 @@ public class MeterInfo extends JFrame implements ActionListener{
         p.setBackground(new Color(173, 216, 230));
         add(p);
 
-        JLabel heading = new JLabel("Meter Information");
+        JLabel heading = new JLabel("New Customer");
         heading.setBounds(180, 10, 200, 25);
         heading.setFont(new Font("Tahoma", Font.PLAIN, 24));
         p.add(heading);
 
-        JLabel lblname = new JLabel("Meter Number");
+        JLabel lblname = new JLabel("Customer Name");
         lblname.setBounds(100, 80, 100, 20);
         p.add(lblname);
 
-        JLabel lblmeternumber = new JLabel(meternumber);
-        lblmeternumber.setBounds(240, 80, 100, 20);
-        p.add(lblmeternumber);
+        tfname = new JTextField();
+        tfname.setBounds(240, 80, 200, 20);
+        p.add(tfname);
 
-        JLabel lblmeterno = new JLabel("Meter Location");
+        JLabel lblmeterno = new JLabel("Meter Number");
         lblmeterno.setBounds(100, 120, 100, 20);
         p.add(lblmeterno);
 
-        meterlocation = new Choice();
-        meterlocation.add("Outside");
-        meterlocation.add("Inside");
-        meterlocation.setBounds(240, 120, 200, 20);
-        p.add(meterlocation);
+        lblmeter = new JLabel("");
+        lblmeter.setBounds(240, 120, 100, 20);
+        p.add(lblmeter);
 
-        JLabel lbladdress = new JLabel("Meter Type");
+        Random ran = new Random();
+        long number = ran.nextLong() % 1000000;
+        lblmeter.setText("" + Math.abs(number));
+
+        JLabel lbladdress = new JLabel("Address");
         lbladdress.setBounds(100, 160, 100, 20);
         p.add(lbladdress);
 
-        metertype = new Choice();
-        metertype.add("Electric Meter");
-        metertype.add("Solar Meter");
-        metertype.add("Smart Meter");
-        metertype.setBounds(240, 160, 200, 20);
-        p.add(metertype);
+        tfaddress = new JTextField();
+        tfaddress.setBounds(240, 160, 200, 20);
+        p.add(tfaddress);
 
-        JLabel lblcity = new JLabel("Phase Code");
+        JLabel lblcity = new JLabel("City");
         lblcity.setBounds(100, 200, 100, 20);
         p.add(lblcity);
 
-        phasecode = new Choice();
-        phasecode.add("011");
-        phasecode.add("022");
-        phasecode.add("033");
-        phasecode.add("044");
-        phasecode.add("055");
-        phasecode.add("066");
-        phasecode.add("077");
-        phasecode.add("088");
-        phasecode.add("099");
-        phasecode.setBounds(240, 200, 200, 20);
-        p.add(phasecode);
+        tfcity = new JTextField();
+        tfcity.setBounds(240, 200, 200, 20);
+        p.add(tfcity);
 
-        JLabel lblstate = new JLabel("Bill Type");
+        JLabel lblstate = new JLabel("State");
         lblstate.setBounds(100, 240, 100, 20);
         p.add(lblstate);
 
-        billtype = new Choice();
-        billtype.add("Normal");
-        billtype.add("Industial");
-        billtype.setBounds(240, 240, 200, 20);
-        p.add(billtype);
+        tfstate = new JTextField();
+        tfstate.setBounds(240, 240, 200, 20);
+        p.add(tfstate);
 
-        JLabel lblemail = new JLabel("Days");
+        JLabel lblemail = new JLabel("Email");
         lblemail.setBounds(100, 280, 100, 20);
         p.add(lblemail);
 
-        JLabel lblemails = new JLabel("30 Days");
-        lblemails.setBounds(240, 280, 100, 20);
-        p.add(lblemails);
+        tfemail = new JTextField();
+        tfemail.setBounds(240, 280, 200, 20);
+        p.add(tfemail);
 
-        JLabel lblphone = new JLabel("Note");
+        JLabel lblphone = new JLabel("Phone Number");
         lblphone.setBounds(100, 320, 100, 20);
         p.add(lblphone);
 
-        JLabel lblphones = new JLabel("By Default Bill is calculated for 30 days only");
-        lblphones.setBounds(240, 320, 500, 20);
-        p.add(lblphones);
+        tfphone = new JTextField();
+        tfphone.setBounds(240, 320, 200, 20);
+        p.add(tfphone);
 
-        next = new JButton("Submit");
-        next.setBounds(220, 390, 100,25);
+        next = new JButton("Next");
+        next.setBounds(120, 390, 100,25);
         next.setBackground(Color.BLACK);
         next.setForeground(Color.WHITE);
         next.addActionListener(this);
         p.add(next);
 
+        cancel = new JButton("Cancel");
+        cancel.setBounds(250, 390, 100,25);
+        cancel.setBackground(Color.BLACK);
+        cancel.setForeground(Color.WHITE);
+        cancel.addActionListener(this);
+        p.add(cancel);
 
         setLayout(new BorderLayout());
 
@@ -131,22 +121,27 @@ public class MeterInfo extends JFrame implements ActionListener{
 
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == next) {
-            String meter = meternumber;
-            String location = meterlocation.getSelectedItem();
-            String type = metertype.getSelectedItem();
-            String code = phasecode.getSelectedItem();
-            String typebill = billtype.getSelectedItem();
-            String days = "30";
+            String name = tfname.getText();
+            String meter = lblmeter.getText();
+            String address = tfaddress.getText();
+            String city = tfcity.getText();
+            String state = tfstate.getText();
+            String email = tfemail.getText();
+            String phone = tfphone.getText();
 
-            String query = "insert into meter_info values('"+meter+"', '"+location+"', '"+type+"', '"+code+"', '"+typebill+"', '"+days+"')";
+            String query1 = "insert into customer values('"+name+"', '"+meter+"', '"+address+"', '"+city+"', '"+state+"', '"+email+"', '"+phone+"')";
+            String query2 = "insert into login values('"+meter+"', '', '"+name+"', '', '')";
 
             try {
                 Conn c = new Conn();
-                c.s.executeUpdate(query);
+                c.s.executeUpdate(query1);
+                c.s.executeUpdate(query2);
 
-                JOptionPane.showMessageDialog(null, "Meter Information Added Successfully");
+                JOptionPane.showMessageDialog(null, "Customer Details Added Successfully");
                 setVisible(false);
 
+                // new frame
+                new MeterInfo(meter);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -156,6 +151,6 @@ public class MeterInfo extends JFrame implements ActionListener{
     }
 
     public static void main(String[] args) {
-        new MeterInfo("");
+        new NewCustomer();
     }
 }
