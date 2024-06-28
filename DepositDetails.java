@@ -8,49 +8,48 @@ import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import net.proteanit.sql.DbUtils;
 
-public class DepositDetails extends JFrame implements ActionListener {
 
-    Choice meternumber , cmonth;
+public class DepositDetails extends JFrame implements ActionListener{
+
+    Choice meternumber, cmonth;
     JTable table;
-    JButton search,print;
-    DepositDetails() {
-        super("Depost Details");
+    JButton search, print;
 
-        setSize(700,700);
-        setLocation(400,100);
+    DepositDetails(){
+        super("Deposit Details");
 
+        setSize(700, 700);
+        setLocation(400, 100);
 
         setLayout(null);
         getContentPane().setBackground(Color.WHITE);
 
-        JLabel lblmeternumber = new JLabel("Search by Meter Number");
-        lblmeternumber.setBounds(20,20,150,20);
+        JLabel lblmeternumber = new JLabel("Search By Meter Number");
+        lblmeternumber.setBounds(20, 20, 150, 20);
         add(lblmeternumber);
 
-
         meternumber = new Choice();
-        meternumber.setBounds(180,20,150,20);
+        meternumber.setBounds(180, 20, 150, 20);
         add(meternumber);
 
         try {
-                Conn c = new Conn();
-                ResultSet rs = c.s.executeQuery("select * from customer");
-                while(rs.next()) {
-                    meternumber.add(rs.getString("meter_no"));
-                }
-        }catch(Exception e){
+            Conn c  = new Conn();
+            ResultSet rs = c.s.executeQuery("select * from customer");
+            while(rs.next()) {
+                meternumber.add(rs.getString("meter_no"));
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        JLabel lblmonth = new JLabel("Search by Month");
-        lblmonth.setBounds(400,20,100,20);
+        JLabel lblmonth = new JLabel("Search By Month");
+        lblmonth.setBounds(400, 20, 100, 20);
         add(lblmonth);
 
-
         cmonth = new Choice();
-        cmonth.setBounds(520,20,150,20);
+        cmonth.setBounds(520, 20, 150, 20);
         cmonth.add("January");
-        cmonth.add("Feburary");
+        cmonth.add("February");
         cmonth.add("March");
         cmonth.add("April");
         cmonth.add("May");
@@ -63,66 +62,56 @@ public class DepositDetails extends JFrame implements ActionListener {
         cmonth.add("December");
         add(cmonth);
 
-
         table = new JTable();
 
-        try{
+        try {
             Conn c = new Conn();
             ResultSet rs = c.s.executeQuery("select * from bill");
 
             table.setModel(DbUtils.resultSetToTableModel(rs));
-
-        }catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-
         JScrollPane sp = new JScrollPane(table);
-        sp.setBounds(0,100,700,600);
+        sp.setBounds(0, 100, 700, 600);
         add(sp);
 
-
-
         search = new JButton("Search");
-        search.setBounds(20,70,80,20);
+        search.setBounds(20, 70, 80, 20);
         search.addActionListener(this);
         add(search);
 
         print = new JButton("Print");
-        print.setBounds(120,70,80,20);
+        print.setBounds(120, 70, 80, 20);
         print.addActionListener(this);
         add(print);
 
 
-
         setVisible(true);
-
     }
 
-    public static void main(String[] args) {
-
-        new DepositDetails();
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == search) {
+    public void actionPerformed(ActionEvent ae) {
+        if (ae.getSource() == search) {
             String query = "select * from bill where meter_no = '"+meternumber.getSelectedItem()+"' and month = '"+cmonth.getSelectedItem()+"'";
-
 
             try {
                 Conn c = new Conn();
                 ResultSet rs = c.s.executeQuery(query);
                 table.setModel(DbUtils.resultSetToTableModel(rs));
-            }catch(Exception ae) {
+            } catch (Exception e) {
 
             }
-        } else {
+        } else  {
             try {
-                    table.print();
-            }catch(Exception ae) {
-                ae.printStackTrace();
+                table.print();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
+    }
+
+    public static void main(String[] args) {
+        new DepositDetails();
     }
 }
