@@ -119,4 +119,3 @@ public class ViewInformation extends JFrame implements ActionListener{
         new ViewInformation("");
     }
 }
-  
